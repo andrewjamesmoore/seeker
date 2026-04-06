@@ -7,17 +7,24 @@ if (!process.getuid) {
   );
 }
 const cacheDirectory = `/tmp/seeker/${process.getuid()}`;
-const cacheFile = `${cacheDirectory}/resulsts.json`;
+const cacheFile = `${cacheDirectory}/results.json`;
 
 function isValidCacheDirectory(stats: fs.Stats, uid: number): boolean {
   return stats.uid === uid && stats.isDirectory() && !stats.isSymbolicLink();
 }
 
-async function ensureCacheDirectory() {
-  await fs.promises.mkdir(cacheDirectory, { recursive: true, mode: 0o700 });
-  const stats = await fs.promises.lstat(cacheDirectory);
+function ensureCacheDirectory() {
+  fs.mkdirSync(cacheDirectory, { recursive: true, mode: 0o700 });
+  const stats = fs.lstatSync(cacheDirectory);
   const uid = process.getuid!();
   if (!isValidCacheDirectory(stats, uid)) {
-    throw new Error(`Error: ${cacheDirectory} is not a safe directory`);
+    throw new Error(
+      `Error: ${cacheDirectory} is not a safe directory. It's possible this directory is a symbolic link or owned by someone else.`,
+    );
   }
+}
+
+function saveCache(query: string, results: unknown[]) {
+  ensureCacheDirectory();
+  fs.writeFileSync(cacheFile, JSON.stringify({ query, results }, null, 2));
 }
