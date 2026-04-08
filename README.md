@@ -9,8 +9,6 @@ skr <action> <n>  → do something with result #n
 
 No pipes, no `xargs`, no copy-pasting paths.
 
----
-
 ## install
 
 ```bash
@@ -18,8 +16,6 @@ npm install -g file-skr
 ```
 
 Uses `rg` / `fd` if available, falls back to `grep` / `find`.
-
----
 
 ## usage
 
@@ -51,8 +47,6 @@ skr ls 3        # ls the directory
 
 Results are cached after each search, so actions always target the last search.
 
----
-
 ## example
 
 ```
@@ -69,4 +63,4 @@ $ skr edit 1
 
 ---
 
-- A Node CLI written in TS.
+> A Node CLI written in TS.
