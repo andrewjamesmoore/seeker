@@ -63,4 +63,3 @@ $ skr edit 1
 
 ---
 
-> A Node CLI written in TS.
